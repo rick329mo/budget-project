@@ -6,6 +6,7 @@ export function useBudgets() {
     return useContext(BudgetsContext)
 }
 
+// what budgets and ids need to look like
 // budgets:
 // {
 //     id:
@@ -35,7 +36,7 @@ export const BudgetsProvider = ({ children }) => {
             return [...prevExpenses, { id: uuidV4(), description, amount, budgetId}]
         })
     }
-    
+
     function addBudget({ name, max }) {
         setBudgets(prevBudgets => {
             if(prevBudgets.find(budget => budget.name === name)) {
@@ -44,11 +45,18 @@ export const BudgetsProvider = ({ children }) => {
             return [...prevBudgets, { id: uuidV4(), name, max }]
         })
     }
-    function deleteBudget() {
-
+    
+    function deleteBudget({ id }) {
+        // expenses are going away instead of becoming uncategorized
+        setBudgets(prevBudgets => {
+            return prevBudgets.filter(budget => budget.id !== id)
+        })
     }
-    function deleteExpense() {
-
+    
+    function deleteExpense({ id }) {
+        setExpenses(prevExpenses => {
+            return prevExpenses.filter(expense => expense.id !== id)
+        })
     }
     
     return (
