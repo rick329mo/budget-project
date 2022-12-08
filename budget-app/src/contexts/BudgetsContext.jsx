@@ -10,23 +10,6 @@ export function useBudgets() {
     return useContext(BudgetsContext)
 }
 
-// what budgets and ids need to look like
-// budgets:
-// {
-//     id:
-//     name:
-//     max:
-// }
-
-// expenses:
-// {
-//     id:
-//     budgetId:
-//     amount:
-//     description:
-// }
-
-
 export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", [])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
@@ -51,7 +34,12 @@ export const BudgetsProvider = ({ children }) => {
     }
     
     function deleteBudget({ id }) {
-        // expenses are going away instead of becoming uncategorized
+        setExpenses(prevExpenses => {
+            return prevExpenses.map(expense => {
+                if (expense.budgetId !== id) return expense
+                return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID}
+            })
+        })
         setBudgets(prevBudgets => {
             return prevBudgets.filter(budget => budget.id !== id)
         })
