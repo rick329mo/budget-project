@@ -7,7 +7,7 @@ import AddBudgetModal from "./components/AddBudgetModal"
 import AddExpenseModal from "./components/AddExpenseModal"
 import ViewExpensesModal from "./components/ViewExpensesModal"
 import { useState } from "react"
-import { BudgetsProvider, UNCATEGORIZED_BUDGET_ID, useBudgets } from "./contexts/BudgetsContext"
+import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "./contexts/BudgetsContext"
 
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
