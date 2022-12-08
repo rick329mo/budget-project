@@ -5,12 +5,14 @@ import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard"
 import TotalBudgetCard from "./components/TotalBudgetCard"
 import AddBudgetModal from "./components/AddBudgetModal"
 import AddExpenseModal from "./components/AddExpenseModal"
+import ViewExpensesModal from "./components/ViewExpensesModal"
 import { useState } from "react"
-import { BudgetsProvider, useBudgets } from "./contexts/BudgetsContext"
+import { BudgetsProvider, UNCATEGORIZED_BUDGET_ID, useBudgets } from "./contexts/BudgetsContext"
 
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
+  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const { budgets, getBudgetExpenses } = useBudgets()
 
@@ -47,19 +49,26 @@ function App() {
               amount={amount}
               max={budget.max}
               onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+              onViewExpensesClick={() => setViewExpensesModalBudgetId(budget.id)}
             />
           )
         })}
-        <UncategorizedBudgetCard onAddExpenseClick={openAddExpenseModal}/>
+        <UncategorizedBudgetCard 
+          onAddExpenseClick={openAddExpenseModal}
+          onViewExpensesClick={() => setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
         <TotalBudgetCard/>
       </div>
 
     </Container>
     <AddBudgetModal show={showAddBudgetModal} handleClose={() => setShowAddBudgetModal(false)}/>
     <AddExpenseModal 
-    show={showAddExpenseModal} 
-    defaultBudgetId={addExpenseModalBudgetId}
-    handleClose={() => setShowAddExpenseModal(false)}
+      show={showAddExpenseModal} 
+      defaultBudgetId={addExpenseModalBudgetId}
+      handleClose={() => setShowAddExpenseModal(false)}
+    />
+    <ViewExpensesModal
+      budgetId={viewExpensesModalBudgetId}
+      handleClose={() => setViewExpensesModalBudgetId()}
     />
   </>
   )
